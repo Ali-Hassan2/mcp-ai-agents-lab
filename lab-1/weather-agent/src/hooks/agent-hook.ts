@@ -18,10 +18,8 @@ const useAgent = () => {
       setResponse(data)
     } catch (err: unknown) {
       let msg = "Unknown Error"
-
       if (err instanceof Error) msg = err.message
       else if (typeof err === "string") msg = err
-
       setError(msg)
     } finally {
       setLoading(false)
