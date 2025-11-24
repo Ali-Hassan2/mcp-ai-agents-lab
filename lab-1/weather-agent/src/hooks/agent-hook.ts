@@ -1,10 +1,12 @@
 import { apiCall } from "../services"
+import { useState } from "react"
+import { useToggle } from "react-use"
 
 const useAgent = () => {
   const [prompt, setPrompt] = useState<string>("")
   const [response, setResponse] = useState<string>("")
   const [error, setError] = useState<string>("")
-  const [loading, setLoading] = useState<boolean>("")
+  const [loading, setLoading] = useToggle(false)
 
   const callData = async () => {
     try {

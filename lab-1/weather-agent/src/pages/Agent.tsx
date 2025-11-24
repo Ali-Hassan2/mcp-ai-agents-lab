@@ -1,31 +1,29 @@
-import React from "react"
-import { apiCall } from "../services"
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import { useAgent } from "../hooks"
+import { Label } from "@radix-ui/react-label"
 
 const Agent = () => {
   const { prompt, setPrompt, error, loading, response, callData } = useAgent()
   if (loading) return <p>Loading, please wait…</p>
   return (
     <>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-
-      <div>
-        <input
-          type="text"
-          placeholder="Please enter prompt"
-          value={prompt}
-          onChange={(e) => setPrompt(e.target.value)}
-        />
-        <button onClick={sendPrompt}>Generate Response</button>
+      <div className="border-4 border-red-500 flex flex-col justify-center items-center pt-2">
+        <Card className="border w-full max-w-md">
+          <CardHeader>
+            <CardTitle>
+              <Label className="text-3xl bold">- Welcome, to Our Agent.</Label>
+            </CardTitle>
+            <CardDescription></CardDescription>
+          </CardHeader>
+        </Card>
       </div>
-      {response && (
-        <div>
-          <h3>Response:</h3>
-          <p>{response}</p>
-        </div>
-      )}
     </>
   )
 }
 
-export {Agent}
+export { Agent }
