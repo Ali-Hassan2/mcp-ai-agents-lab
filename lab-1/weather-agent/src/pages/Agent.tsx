@@ -9,7 +9,7 @@ import { useAgent } from "../hooks"
 import { Label } from "@radix-ui/react-label"
 import { Separator } from "@radix-ui/react-separator"
 import { Button } from "@/components/ui/button"
-import { Loader2, Sparkles, Star } from "lucide-react"
+import { Loader2, Sparkles } from "lucide-react"
 import { Textarea } from "@/components/ui/textarea"
 import { useEffect } from "react"
 

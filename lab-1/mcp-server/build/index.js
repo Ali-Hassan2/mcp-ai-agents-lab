@@ -1,12 +1,10 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
-// Minimal MCP server
 const server = new McpServer({
     name: "Weather Server",
     version: "1.0.0",
 });
-// Register a tool with CORRECT outputSchema
 server.registerTool("getWeatherDataByCityName", {
     inputSchema: z.object({ city: z.string() }),
     description: "Get weather data for a city",

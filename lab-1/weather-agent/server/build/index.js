@@ -2,13 +2,9 @@ import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 import dotenv from "dotenv";
 dotenv.config();
-// Use double backslashes OR forward slashes in Windows paths
-// const mcp_server_path =
-// "C:/Users/HASSAN ALI/Documents/mcp/lab-1/mcp-server/build/index.js"
-// OR
-const mcp_server_path = "C:\\Users\\HASSAN ALI\\Documents\\mcp\\lab-1\\mcp-server\\build\\index.js";
-console.log("The server path is:", mcp_server_path);
-class MCPClient {
+const MCP_SERVER_PATH = process.env.MCP_SERVER_PATH ||
+    "C:\\Users\\HASSAN ALI\\Documents\\mcp\\lab-1\\mcp-server\\build\\index.js";
+export class MCPWeatherClient {
     client;
     transport = null;
     constructor() {
@@ -17,19 +13,18 @@ class MCPClient {
             version: "1.0.0",
         });
     }
-    async connect(serverPath) {
+    async connect() {
         this.transport = new StdioClientTransport({
-            command: process.execPath, // Node executable
-            args: [serverPath],
+            command: process.execPath,
+            args: [MCP_SERVER_PATH],
         });
         await this.client.connect(this.transport);
-        const tools = await this.client.listTools();
-        console.log("MCP server connected. Available tools:", tools.tools.map((t) => t.name));
+        console.log("Connected to MCP server");
     }
-    async callTool(toolName, args) {
+    async getWeather(city) {
         const result = await this.client.callTool({
-            name: toolName,
-            arguments: args,
+            name: "getWeatherDataByCityName",
+            arguments: { city },
         });
         return result.content
             .map((c) => c.text)
@@ -39,15 +34,5 @@ class MCPClient {
         await this.client.close();
     }
 }
-async function main() {
-    const client = new MCPClient();
-    // directly use the hardcoded path
-    await client.connect(mcp_server_path);
-    const response = await client.callTool("getWeatherDataByCityName", {
-        city: "gujrat",
-    });
-    console.log("Weather response is:", response);
-    await client.close();
-}
-main().catch((err) => console.error("Error:", err));
+export const mcpWeatherClient = new MCPWeatherClient();
 //# sourceMappingURL=index.js.map
