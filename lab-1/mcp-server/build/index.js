@@ -38,15 +38,17 @@ server.registerTool("getWeatherDataByCityName", {
     }),
     description: "Fetches weather data by city name",
 }, async (args) => {
+    console.log(`[MCP SERVER] Received request for city: ${args.city}`);
     const data = await getWeatherData(args.city);
-    return {
-        content: [
-            {
-                type: "text",
-                text: JSON.stringify(data),
-            },
-        ],
-    };
+    const content = [
+        { type: "text", text: `Temperature: ${data.temp || "N/A"}` },
+        { type: "text", text: `Humidity: ${data.humidity || "N/A"}` },
+        {
+            type: "text",
+            text: `Chance of Rain: ${data.Chances_Of_Rain || "N/A"}`,
+        },
+    ];
+    return { content };
 });
 async function main() {
     const transport = new StdioServerTransport();

@@ -1,5 +1,6 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js"
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
+
 import { z } from "zod"
 
 enum SupportedCity {
@@ -62,16 +63,17 @@ server.registerTool(
     description: "Fetches weather data by city name",
   },
   async (args: WeatherToolInput) => {
+    console.log(`[MCP SERVER] Received request for city: ${args.city}`)
     const data = await getWeatherData(args.city)
-
-    return {
-      content: [
-        {
-          type: "text",
-          text: JSON.stringify(data),
-        },
-      ],
-    }
+    const content: MCPTextContent[] = [
+      { type: "text", text: `Temperature: ${data.temp || "N/A"}` },
+      { type: "text", text: `Humidity: ${data.humidity || "N/A"}` },
+      {
+        type: "text",
+        text: `Chance of Rain: ${data.Chances_Of_Rain || "N/A"}`,
+      },
+    ]
+    return { content }
   }
 )
 

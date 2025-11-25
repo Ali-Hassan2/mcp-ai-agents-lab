@@ -7,12 +7,16 @@ const useAgent = () => {
   const [response, setResponse] = useState<string>("")
   const [error, setError] = useState<string>("")
   const [loading, setLoading] = useToggle(false)
+  const [open, setIsOpen] = useToggle(false)
 
   const callData = async () => {
     try {
+      console.log("The function been called.")
+      setIsOpen(true)
       setLoading(true)
       setError("")
       setResponse("")
+      await new Promise((res) => setTimeout(res, 2000))
       if (!prompt.trim()) {
         setError("Please provide a prompt")
       }
@@ -34,6 +38,7 @@ const useAgent = () => {
     error,
     loading,
     callData,
+    open,
   }
 }
 
