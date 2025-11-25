@@ -31,7 +31,6 @@ class MCPClient {
             name: toolName,
             arguments: args,
         });
-        console.log("The result----------- is: ", result.content);
         return result.content
             .map((c) => c.text)
             .join("\n");

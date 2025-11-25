@@ -42,7 +42,7 @@ class MCPClient {
       name: toolName,
       arguments: args,
     })
-    console.log("The result----------- is: ", result.content)
+
     return (result.content as Array<{ type: string; text: string }>)
       .map((c) => c.text)
       .join("\n")
