@@ -3,17 +3,10 @@ import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js"
 import dotenv from "dotenv"
 
 dotenv.config()
-
-// Use double backslashes OR forward slashes in Windows paths
-// const mcp_server_path =
-// "C:/Users/HASSAN ALI/Documents/mcp/lab-1/mcp-server/build/index.js"
-// OR
 const mcp_server_path =
   "C:\\Users\\HASSAN ALI\\Documents\\mcp\\lab-1\\mcp-server\\build\\index.js"
 
-console.log("The server path is:", mcp_server_path)
-
-class MCPClient {
+export class MCPClient {
   private client: Client
   private transport: StdioClientTransport | null = null
 
@@ -69,3 +62,5 @@ async function main() {
 }
 
 main().catch((err) => console.error("Error:", err))
+
+export const mcpClient = new MCPClient()

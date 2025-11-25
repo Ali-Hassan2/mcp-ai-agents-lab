@@ -8,15 +8,14 @@ const server = new McpServer({
   version: "1.0.0",
 })
 
-// Register tool with a permissive schema
+// Register a tool with CORRECT outputSchema
 server.registerTool(
   "getWeatherDataByCityName",
   {
-    inputSchema: z.object({ city: z.string() }), // simple input
-    outputSchema: z.object({}).strict(false), // no validation, must be a Zod object
+    inputSchema: z.object({ city: z.string() }),
     description: "Get weather data for a city",
   },
-  async (args: { city?: string }) => {
+  async (args: Record<string, any>, extra) => {
     console.log("[MCP SERVER] Request received for city:", args.city)
 
     const data = {
@@ -25,7 +24,6 @@ server.registerTool(
       rainChance: "60%",
     }
 
-    // MCP expects `content` array
     return {
       content: [
         { type: "text", text: `Temperature: ${data.temp}` },
@@ -35,7 +33,6 @@ server.registerTool(
     }
   }
 )
-
 async function main() {
   const transport = new StdioServerTransport()
   await server.connect(transport)
