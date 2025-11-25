@@ -1,3 +1,4 @@
+import { getWeatherData } from "@/config"
 import { apiCall } from "../services"
 import { useState } from "react"
 import { useToggle } from "react-use"
@@ -11,17 +12,25 @@ const useAgent = () => {
 
   const callData = async () => {
     try {
-      console.log("The function been called.")
       setIsOpen(true)
       setLoading(true)
       setError("")
       setResponse("")
-      await new Promise((res) => setTimeout(res, 2000))
       if (!prompt.trim()) {
         setError("Please provide a prompt")
+        return
       }
-      const data = await apiCall(prompt)
-      setResponse(data)
+      const llmOutput = await apiCall(prompt)
+      const toolCallMatch = llmOutput.match(
+        /Call tool getWeatherDataByCityName with argument city\s*=\s*(.+)/i
+      )
+      let finalData = llmOutput
+      if (toolCallMatch) {
+        const city = toolCallMatch[1].trim()
+        const weather = await getWeatherData(city)
+        finalData = `Weather for ${city}: ${weather}`
+      }
+      setResponse(finalData)
     } catch (err: unknown) {
       let msg = "Unknown Error"
       if (err instanceof Error) msg = err.message
@@ -31,6 +40,7 @@ const useAgent = () => {
       setLoading(false)
     }
   }
+
   return {
     prompt,
     setPrompt,

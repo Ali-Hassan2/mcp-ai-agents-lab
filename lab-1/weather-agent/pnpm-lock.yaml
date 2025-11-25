@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@ai-sdk/deepseek':
+        specifier: ^1.0.29
+        version: 1.0.29(zod@4.1.13)
       '@radix-ui/react-label':
         specifier: ^2.1.8
         version: 2.1.8(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
@@ -26,6 +29,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      deepseek-sdk:
+        specifier: ^1.0.0
+        version: 1.0.0
       lucide-react:
         specifier: ^0.554.0
         version: 0.554.0(react@19.2.0)
@@ -86,6 +92,28 @@ importers:
         version: 7.2.4(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)
 
 packages:
+
+  '@ai-sdk/deepseek@1.0.29':
+    resolution: {integrity: sha512-b6rV+T3o81ooAjSizkpg/SYjzWq7wZeOcBVPRt3tHBHiMbXfc9FYf3nKx31mHFkZTc7ktSf59kMFj6sTYe7gug==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      zod: ^3.25.76 || ^4.1.8
+
+  '@ai-sdk/openai-compatible@1.0.27':
+    resolution: {integrity: sha512-bpYruxVLhrTbVH6CCq48zMJNeHu6FmHtEedl9FXckEgcIEAi036idFhJlcRwC1jNCwlacbzb8dPD7OAH1EKJaQ==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      zod: ^3.25.76 || ^4.1.8
+
+  '@ai-sdk/provider-utils@3.0.17':
+    resolution: {integrity: sha512-TR3Gs4I3Tym4Ll+EPdzRdvo/rc8Js6c4nVhFLuvGLX/Y4V9ZcQMa/HTiYsHEgmYrf1zVi6Q145UEZUfleOwOjw==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      zod: ^3.25.76 || ^4.1.8
+
+  '@ai-sdk/provider@2.0.0':
+    resolution: {integrity: sha512-6o7Y2SeO9vFKB8lArHXehNuusnpddKPk7xqL7T2/b+OvXMRIXUO1rR4wcv1hAFUAT9avGZshty3Wlua/XA7TvA==}
+    engines: {node: '>=18'}
 
   '@babel/code-frame@7.27.1':
     resolution: {integrity: sha512-cjQ7ZlQ0Mv3b47hABuTevyTuYN4i+loJKGeV9flcCgIK37cCXRh+L1bd3iBHlynerhQ7BhCkn2BPbQUL+rGqFg==}
@@ -582,6 +610,9 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@standard-schema/spec@1.0.0':
+    resolution: {integrity: sha512-m2bOd0f2RT9k8QJx1JN85cZYyH1RqFBdlwtkSlf4tBDYLCiiZnv1fIIwacK6cqwXavOydf0NPToMQgpKq+dVlA==}
+
   '@tailwindcss/node@4.1.17':
     resolution: {integrity: sha512-csIkHIgLb3JisEFQ0vxr2Y57GUNYh447C8xzwj89U/8fdW8LhProdxvnVH6U8M2Y73QKiTIH+LWbK3V2BBZsAg==}
 
@@ -874,6 +905,9 @@ packages:
   deep-is@0.1.4:
     resolution: {integrity: sha512-oIPzksmTg4/MriiaYGO+okXDT7ztn/w3Eptv/+gSIdMdKsJo0u4CfYNFJPy+4SKMuCqGw2wxnA+URMg3t8a/bQ==}
 
+  deepseek-sdk@1.0.0:
+    resolution: {integrity: sha512-E2kfO8r3/xoi+WsgBlNDyjcbUPQ+iYt4kVRtTu/imMkd++c5jk28lVG17f9oZjTotAwLjf6GupoLhuaaeuLNpQ==}
+
   detect-libc@2.1.2:
     resolution: {integrity: sha512-Btj2BOOO83o3WyH59e8MgXsxEQVcarkUOpEYrubB0urwnN10yQ364rsiByU11nZlqWYZm05i/of7io4mzihBtQ==}
     engines: {node: '>=8'}
@@ -953,6 +987,10 @@ packages:
   esutils@2.0.3:
     resolution: {integrity: sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==}
     engines: {node: '>=0.10.0'}
+
+  eventsource-parser@3.0.6:
+    resolution: {integrity: sha512-Vo1ab+QXPzZ4tCa8SwIHJFaSzy4R6SHf7BY79rFBDf0idraZWAkYrDjDj8uWaSm3S2TK+hJ7/t1CEmZ7jXw+pg==}
+    engines: {node: '>=18.0.0'}
 
   fast-deep-equal@3.1.3:
     resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
@@ -1106,6 +1144,9 @@ packages:
 
   json-schema-traverse@0.4.1:
     resolution: {integrity: sha512-xbbCH5dCYU5T8LcEhhuh7HJ88HXuW3qsI3Y0zOZFKfZEHcpWiHU/Jxzk629Brsab/mMiHQti9wMP+845RPe3Vg==}
+
+  json-schema@0.4.0:
+    resolution: {integrity: sha512-es94M3nTIfsEPisRafak+HDLfHXnKBhV3vU5eqPcS3flIWqcxJWgXHXiey3YrpaNsanY5ei1VoYEbOzijuq9BA==}
 
   json-stable-stringify-without-jsonify@1.0.1:
     resolution: {integrity: sha512-Bdboy+l7tA3OGW6FjyFHWkP5LuByj1Tk33Ljyq0axyzdk9//JSi2u3fP1QSmd1KNwq6VOKYGlAu87CisVir6Pw==}
@@ -1543,6 +1584,30 @@ packages:
 
 snapshots:
 
+  '@ai-sdk/deepseek@1.0.29(zod@4.1.13)':
+    dependencies:
+      '@ai-sdk/openai-compatible': 1.0.27(zod@4.1.13)
+      '@ai-sdk/provider': 2.0.0
+      '@ai-sdk/provider-utils': 3.0.17(zod@4.1.13)
+      zod: 4.1.13
+
+  '@ai-sdk/openai-compatible@1.0.27(zod@4.1.13)':
+    dependencies:
+      '@ai-sdk/provider': 2.0.0
+      '@ai-sdk/provider-utils': 3.0.17(zod@4.1.13)
+      zod: 4.1.13
+
+  '@ai-sdk/provider-utils@3.0.17(zod@4.1.13)':
+    dependencies:
+      '@ai-sdk/provider': 2.0.0
+      '@standard-schema/spec': 1.0.0
+      eventsource-parser: 3.0.6
+      zod: 4.1.13
+
+  '@ai-sdk/provider@2.0.0':
+    dependencies:
+      json-schema: 0.4.0
+
   '@babel/code-frame@7.27.1':
     dependencies:
       '@babel/helper-validator-identifier': 7.28.5
@@ -1931,6 +1996,8 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.53.3':
     optional: true
 
+  '@standard-schema/spec@1.0.0': {}
+
   '@tailwindcss/node@4.1.17':
     dependencies:
       '@jridgewell/remapping': 2.3.5
@@ -2241,6 +2308,8 @@ snapshots:
 
   deep-is@0.1.4: {}
 
+  deepseek-sdk@1.0.0: {}
+
   detect-libc@2.1.2: {}
 
   electron-to-chromium@1.5.259: {}
@@ -2370,6 +2439,8 @@ snapshots:
 
   esutils@2.0.3: {}
 
+  eventsource-parser@3.0.6: {}
+
   fast-deep-equal@3.1.3: {}
 
   fast-glob@3.3.3:
@@ -2487,6 +2558,8 @@ snapshots:
   json-buffer@3.0.1: {}
 
   json-schema-traverse@0.4.1: {}
+
+  json-schema@0.4.0: {}
 
   json-stable-stringify-without-jsonify@1.0.1: {}
 
