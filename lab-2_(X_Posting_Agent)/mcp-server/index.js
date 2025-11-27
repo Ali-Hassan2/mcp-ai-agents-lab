@@ -26,14 +26,16 @@ server.registerTool(
   },
   async (args) => {
     const { num1, num2, num3 } = args
-    return [
-      {
-        type: "text",
-        text: `The sum calculation of ${num1}, ${num2}, ${num3} = ${
-          num1 + num2 + num3
-        }`,
-      },
-    ]
+    return {
+      content: [
+        {
+          type: "text",
+          text: `The sum calculation of ${num1}, ${num2}, ${num3} = ${
+            num1 + num2 + num3
+          }`,
+        },
+      ],
+    }
   }
 )
 
