@@ -44,39 +44,40 @@ mcpClient
   })
 
 async function chatLoop() {
-  const question = await rl.question("Ask: ")
+  while (true) {
+    const question = await rl.question("Ask: ")
 
-  chatHistory.push({
-    role: "user",
-    parts: [
-      {
-        text: question,
-        type: "text",
-      },
-    ],
-  })
-  const response = await ai.models.generateContent({
-    model: "gemini-2.0-flash",
-    content: chatHistory,
-    config: {
-      tools: [
+    chatHistory.push({
+      role: "user",
+      parts: [
         {
-          functionDeclarations: tools,
+          text: question,
+          type: "text",
         },
       ],
-    },
-  })
-
-  const responseText = response.candidates[0].content.parts[0].text
-  chatHistory.push({
-    role: "model",
-    parts: [
-      {
-        text: responseText,
-        type: "text",
+    })
+    const response = await ai.models.generateContent({
+      model: "gemini-2.0-flash",
+      content: chatHistory,
+      config: {
+        tools: [
+          {
+            functionDeclarations: tools,
+          },
+        ],
       },
-    ],
-  })
-  console.log(`LLM: ${responseText}`)
-  chatLoop()
+    })
+
+    const responseText = response.candidates[0].content.parts[0].text
+    chatHistory.push({
+      role: "model",
+      parts: [
+        {
+          text: responseText,
+          type: "text",
+        },
+      ],
+    })
+    console.log(`LLM: ${responseText}`)
+  }
 }
