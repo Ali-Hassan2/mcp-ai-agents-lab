@@ -2,6 +2,7 @@ import express from "express"
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js"
 // import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse.js"
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js"
+import { z } from "zod"
 
 const server = new McpServer({
   name: "x-mcp-server",
@@ -11,10 +12,49 @@ const server = new McpServer({
 const app = express()
 app.use(express.json())
 
+server.registerTool(
+  "add3Numbers",
+  {
+    title: "add3NumbersTool",
+    descripiton:
+      "This Tool holds a function which calculates the sum for 3 numebrs",
+    inputSchema: {
+      num1: z.number(),
+      num2: z.number(),
+      num3: z.number(),
+    },
+  },
+  async (args) => {
+    const { num1, num2, num3 } = args
+    return [
+      {
+        type: "text",
+        text: `The sum calculation of ${num1}, ${num2}, ${num3} = ${
+          num1 + num2 + num3
+        }`,
+      },
+    ]
+  }
+)
+
+server.registerTool(
+  "echoingName",
+  {
+    title: "Printing Greet on Name Tool",
+    description: "This tool takes the name and prints it",
+    inputSchema: {
+      message: z.string(),
+    },
+  },
+  async (args) => {
+    return [{ type: "text", text: `Aslam-Alaikum ${args.message}` }]
+  }
+)
+
 const transports = {}
 
 app.all("/mcp", async (req, res) => {
-  const transport = new SSEServerTransport({
+  const transport = new StreamableHTTPServerTransport({
     sessionIdGeneration: undefined,
     enableJsonResponse: true,
   })
