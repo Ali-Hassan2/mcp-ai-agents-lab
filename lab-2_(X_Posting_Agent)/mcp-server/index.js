@@ -3,6 +3,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js"
 // import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse.js"
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js"
 import { z } from "zod"
+import { X_POST } from "./x-tool.js"
 
 const server = new McpServer({
   name: "x-mcp-server",
@@ -39,6 +40,23 @@ server.registerTool(
   }
 )
 
+console.log("-------", X_POST)
+
+server.registerTool(
+  "x-post-creation",
+  {
+    title: "POST ON X",
+    description: "can create a post on X",
+    inputSchema: {
+      status: z.string(),
+    },
+  },
+  async (args) => {
+    const { status } = args
+    return X_POST(status)
+  }
+)
+
 server.registerTool(
   "echoingName",
   {
@@ -49,7 +67,8 @@ server.registerTool(
     },
   },
   async (args) => {
-    return [{ type: "text", text: `Aslam-Alaikum ${args.message}` }]
+    const { message } = args
+    return { content: [{ type: "text", text: `Aslam-Alaikum ${message}` }] }
   }
 )
 

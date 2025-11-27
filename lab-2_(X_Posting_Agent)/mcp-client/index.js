@@ -5,11 +5,11 @@ import { Client } from "@modelcontextprotocol/sdk/client/index.js"
 import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js"
 import { property, toLowerCase } from "zod"
 dotenv.config()
+
 const ai = new GoogleGenAI({
   apiKey: process.env.GEMENI_API_KEY,
 })
 
-console.log("The apiKey for llm is:", process.env.GEMENI_API_KEY)
 const mcpClient = new Client({
   name: "mcp-client-x",
   version: "1.0.0",
@@ -29,6 +29,7 @@ mcpClient
     console.log("CONNECTION ESTABLISHED BETWEEN MCP_SERVER AND CLIENT.")
 
     tools = (await mcpClient.listTools()).tools.map((tool) => {
+      console.log("Avaiable tools: ", tools)
       return {
         name: tool.name,
         description: tool.description,
@@ -40,7 +41,6 @@ mcpClient
       }
     })
     // tools.append(toolsFromServer)
-    console.log("Available Tools are:", tools)
     chatLoop()
   })
 
@@ -70,6 +70,7 @@ async function chatLoop() {
       contents: chatHistory,
       config: { tools: [{ functionDeclarations: tools }] },
     })
+
     const functionCall = response.candidates[0].content.parts[0].functionCall
     if (functionCall) {
       pendingFunctionCall = functionCall
