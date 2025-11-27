@@ -4,6 +4,7 @@ import { GoogleGenAI } from "@google/genai"
 import { Client } from "@modelcontextprotocol/sdk/client/index.js"
 import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js"
 import { property, toLowerCase } from "zod"
+import { ServerURL } from "./constants"
 dotenv.config()
 
 const ai = new GoogleGenAI({
@@ -23,7 +24,7 @@ const rl = readline.createInterface({
 
 mcpClient
   .connect(
-    new StreamableHTTPClientTransport(new URL("http://localhost:3000/mcp"))
+    new StreamableHTTPClientTransport(new URL(ServerURL))
   )
   .then(async () => {
     console.log("CONNECTION ESTABLISHED BETWEEN MCP_SERVER AND CLIENT.")
