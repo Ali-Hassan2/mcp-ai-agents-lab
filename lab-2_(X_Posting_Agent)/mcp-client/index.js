@@ -39,8 +39,8 @@ mcpClient
       }
     })
     // tools.append(toolsFromServer)
-    chatLoop()
     console.log("Available Tools are:", tools)
+    chatLoop()
   })
 
 async function chatLoop() {
