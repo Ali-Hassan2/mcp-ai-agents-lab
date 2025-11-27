@@ -26,8 +26,8 @@ mcpClient
   )
   .then(async () => {
     console.log("CONNECTION ESTABLISHED BETWEEN MCP_SERVER AND CLIENT.")
-    chatLoop()
-    const toolsFromServer = (await mcpClient.listTools()).tools.map((tool) => {
+
+    tools = (await mcpClient.listTools()).tools.map((tool) => {
       return {
         name: tool.name,
         description: tool.description,
@@ -38,7 +38,8 @@ mcpClient
         },
       }
     })
-    tools.append(toolsFromServer)
+    // tools.append(toolsFromServer)
+    chatLoop()
     console.log("Available Tools are:", tools)
   })
 
@@ -57,7 +58,13 @@ async function chatLoop() {
   const response = await ai.models.generateContent({
     model: "gemini-2.0-flash",
     content: chatHistory,
-    
+    config: {
+      tools: [
+        {
+          functionDeclarations: tools,
+        },
+      ],
+    },
   })
 
   const responseText = response.candidates[0].content.parts[0].text
