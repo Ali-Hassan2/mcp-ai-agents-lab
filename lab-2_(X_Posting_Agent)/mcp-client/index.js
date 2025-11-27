@@ -6,9 +6,10 @@ import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/
 import { property, toLowerCase } from "zod"
 dotenv.config()
 const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_KEY,
+  apiKey: process.env.GEMENI_API_KEY,
 })
 
+console.log("The apiKey for llm is:", process.env.GEMENI_API_KEY)
 const mcpClient = new Client({
   name: "mcp-client-x",
   version: "1.0.0",
@@ -58,7 +59,7 @@ async function chatLoop() {
     })
     const response = await ai.models.generateContent({
       model: "gemini-2.0-flash",
-      content: chatHistory,
+      contents: chatHistory,
       config: {
         tools: [
           {
