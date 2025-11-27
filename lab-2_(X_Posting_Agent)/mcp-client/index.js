@@ -6,9 +6,10 @@ import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/
 import { property, toLowerCase } from "zod"
 dotenv.config()
 const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_KEY,
+  apiKey: process.env.GEMENI_API_KEY,
 })
 
+console.log("The apiKey for llm is:", process.env.GEMENI_API_KEY)
 const mcpClient = new Client({
   name: "mcp-client-x",
   version: "1.0.0",
@@ -26,8 +27,8 @@ mcpClient
   )
   .then(async () => {
     console.log("CONNECTION ESTABLISHED BETWEEN MCP_SERVER AND CLIENT.")
-    chatLoop()
-    const toolsFromServer = (await mcpClient.listTools()).tools.map((tool) => {
+
+    tools = (await mcpClient.listTools()).tools.map((tool) => {
       return {
         name: tool.name,
         description: tool.description,
@@ -38,38 +39,47 @@ mcpClient
         },
       }
     })
-    tools.append(toolsFromServer)
+    // tools.append(toolsFromServer)
     console.log("Available Tools are:", tools)
+    chatLoop()
   })
 
 async function chatLoop() {
-  const question = await rl.question("Ask: ")
-
-  chatHistory.push({
-    role: "user",
-    parts: [
-      {
-        text: question,
-        type: "text",
-      },
-    ],
-  })
-  const response = await ai.models.generateContent({
-    model: "gemini-2.0-flash",
-    content: chatHistory,
-    
-  })
-
-  const responseText = response.candidates[0].content.parts[0].text
-  chatHistory.push({
-    role: "model",
-    parts: [
-      {
-        text: responseText,
-        type: "text",
-      },
-    ],
-  })
-  console.log(`LLM: ${responseText}`)
-  chatLoop()
+  let pendingFunctionCall = null
+  while (true) {
+    if (pendingFunctionCall) {
+      const toolOutCome = await mcpClient.callTool({
+        name: pendingFunctionCall.name,
+        arguments: pendingFunctionCall.args,
+      })
+      console.log("The Tool Result is:", toolOutCome.content[0].text)
+      chatHistory.push({
+        role: "model",
+        parts: [{ text: toolOutCome.content[0].text, type: "text" }],
+      })
+      pendingFunctionCall = null
+    } else {
+      const question = await rl.question("Ask: ")
+      chatHistory.push({
+        role: "user",
+        parts: [{ text: question, type: "text" }],
+      })
+    }
+    const response = await ai.models.generateContent({
+      model: "gemini-2.0-flash",
+      contents: chatHistory,
+      config: { tools: [{ functionDeclarations: tools }] },
+    })
+    const functionCall = response.candidates[0].content.parts[0].functionCall
+    if (functionCall) {
+      pendingFunctionCall = functionCall
+    } else {
+      const responseText = response.candidates[0].content.parts[0].text
+      chatHistory.push({
+        role: "model",
+        parts: [{ text: responseText, type: "text" }],
+      })
+      console.log(`LLM: ${responseText}`)
+    }
+  }
 }
