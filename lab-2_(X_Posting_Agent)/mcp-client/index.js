@@ -44,19 +44,40 @@ mcpClient
     chatLoop()
   })
 
-async function chatLoop() {
+async function chatLoop(toolCall) {
   while (true) {
-    const question = await rl.question("Ask: ")
+    if (toolCall) {
+      console.log("Calling Tool", toolCall.name)
 
-    chatHistory.push({
-      role: "user",
-      parts: [
-        {
-          text: question,
-          type: "text",
-        },
-      ],
-    })
+      const toolOutCome = await mcpClient.callTool({
+        name: toolCall.name,
+        arguments: toolCall.args,
+      })
+      console.log("The Tool Result is:", toolOutCome)
+      console.log("toolOutCome.content[0]-------", toolOutCome.content[0].text)
+      chatHistory.push({
+        role: "user",
+        parts: [
+          {
+            text: toolOutCome.content[0].text,
+            type: "text",
+          },
+        ],
+      })
+    } else {
+      const question = await rl.question("Ask: ")
+
+      chatHistory.push({
+        role: "user",
+        parts: [
+          {
+            text: question,
+            type: "text",
+          },
+        ],
+      })
+    }
+
     const response = await ai.models.generateContent({
       model: "gemini-2.0-flash",
       contents: chatHistory,
@@ -68,7 +89,10 @@ async function chatLoop() {
         ],
       },
     })
-
+    const functionCall = response.candidates[0].content.parts[0].functionCall
+    if (functionCall) {
+      return chatLoop(functionCall)
+    }
     const responseText = response.candidates[0].content.parts[0].text
     chatHistory.push({
       role: "model",
